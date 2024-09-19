@@ -1,6 +1,6 @@
 streamlit
 numpy == 1.38.0
 
-openCV == 4.10.0
+opencv-python==2.4.9
 easyocr == 1.7.1
 pillow == 10.4.0
