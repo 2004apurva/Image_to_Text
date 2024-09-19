@@ -1,8 +1,8 @@
 streamlit
-numpy == 1.38.0
+numpy 
 
-opencv-python==2.4.9
-easyocr == 1.7.1
-pillow == 10.4.0
+opencv-python
+easyocr 
+pillow 
 opencv-python
 streamlit
