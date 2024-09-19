@@ -1,5 +1,6 @@
 streamlit
-PIL 
-easyocr
-cv2
-numpy
+numpy == 1.38.0
+
+OpenCV == 4.10.0
+easyocr == 1.7.1
+pillow == 10.4.0
