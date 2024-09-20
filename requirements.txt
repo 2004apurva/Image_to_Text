@@ -1,5 +1,6 @@
 streamlit
 numpy 
+css
 
 opencv-python
 easyocr 

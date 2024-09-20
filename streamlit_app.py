@@ -84,5 +84,5 @@ else:
 
 # Footer with app credits
 st.sidebar.markdown("---")
-st.sidebar.write("**Created by:** Your Name")
+st.sidebar.write("**Created by:** Apurva Pandey")
 st.sidebar.write("**Powered by:** EasyOCR, Streamlit, OpenCV")
