@@ -61,23 +61,14 @@ if uploaded_file is not None:
     for (bbox, text, prob) in result:
         st.text(f"{text} (Confidence: {prob:.2f})")
 
-    # Draw bounding boxes on the image
-    for (bbox, text, prob) in result:
-        top_left = tuple(bbox[0])
-        bottom_right = tuple(bbox[2])
-        image_cv = cv2.rectangle(image_cv, top_left, bottom_right, (0, 255, 0), 2)
+ 
     
     # Convert the image back to RGB for displaying in Streamlit
     image_rgb = cv2.cvtColor(image_cv, cv2.COLOR_BGR2RGB)
     
-    # Display image with bounding boxes
-    st.image(image_rgb, caption="Image with Bounding Boxes", use_column_width=True)
 
-    # Allow user to download the extracted text
-    if st.button("Download Extracted Text"):
-        extracted_text = "\n".join([f"{text} (Confidence: {prob:.2f})" for (_, text, prob) in result])
-        text_io = io.StringIO(extracted_text)
-        st.download_button("Download as Text", text_io, file_name="extracted_text.txt")
+
+    
 
 else:
     st.warning("Please upload an image file.")
