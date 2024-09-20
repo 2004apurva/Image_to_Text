@@ -20,11 +20,8 @@ st.title("Detailed Image Upload and OCR Extraction App")
 # File uploader
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
 
-# Preprocessing options
-preprocess = st.sidebar.radio("Preprocessing Options:", ("None", "Grayscale", "Thresholding", "Blurring"))
-
-# Confidence threshold
-confidence_threshold = st.sidebar.slider("Confidence Threshold", min_value=0.0, max_value=1.0, value=0.5, step=0.05)
+# Preprocessing options (removed Thresholding and Confidence Threshold)
+preprocess = st.sidebar.radio("Preprocessing Options:", ("None", "Grayscale", "Blurring"))
 
 # OCR Language selection
 languages = ['en', 'fr', 'de', 'es']  # Add more languages if needed
@@ -40,9 +37,6 @@ if uploaded_file is not None:
     # Preprocess the image based on user selection
     if preprocess == "Grayscale":
         image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY)
-    elif preprocess == "Thresholding":
-        image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY)
-        _, image_np = cv2.threshold(image_np, 128, 255, cv2.THRESH_BINARY)
     elif preprocess == "Blurring":
         image_np = cv2.GaussianBlur(image_np, (5, 5), 0)
 
@@ -62,16 +56,13 @@ if uploaded_file is not None:
     st.write("Extracting text using OCR...")
     result = reader.readtext(image_cv)
 
-    # Filter results based on confidence threshold
-    filtered_result = [r for r in result if r[2] >= confidence_threshold]
-
     # Display the OCR result
-    st.write(f"Extracted Text (Confidence >= {confidence_threshold}):")
-    for (bbox, text, prob) in filtered_result:
+    st.write("Extracted Text:")
+    for (bbox, text, prob) in result:
         st.text(f"{text} (Confidence: {prob:.2f})")
 
     # Draw bounding boxes on the image
-    for (bbox, text, prob) in filtered_result:
+    for (bbox, text, prob) in result:
         top_left = tuple(bbox[0])
         bottom_right = tuple(bbox[2])
         image_cv = cv2.rectangle(image_cv, top_left, bottom_right, (0, 255, 0), 2)
@@ -84,7 +75,7 @@ if uploaded_file is not None:
 
     # Allow user to download the extracted text
     if st.button("Download Extracted Text"):
-        extracted_text = "\n".join([f"{text} (Confidence: {prob:.2f})" for (_, text, prob) in filtered_result])
+        extracted_text = "\n".join([f"{text} (Confidence: {prob:.2f})" for (_, text, prob) in result])
         text_io = io.StringIO(extracted_text)
         st.download_button("Download as Text", text_io, file_name="extracted_text.txt")
 
