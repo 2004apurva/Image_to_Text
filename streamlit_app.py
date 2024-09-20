@@ -82,16 +82,12 @@ if uploaded_file is not None:
     # Display image with bounding boxes
     st.image(image_rgb, caption="Image with Bounding Boxes", use_column_width=True)
 
-    # Allow user to download the extracted text
-    if st.button("Download Extracted Text"):
-        extracted_text = "\n".join([f"{text} (Confidence: {prob:.2f})" for (_, text, prob) in filtered_result])
-        text_io = io.StringIO(extracted_text)
-        st.download_button("Download as Text", text_io, file_name="extracted_text.txt")
+    
 
 else:
     st.warning("Please upload an image file.")
 
 # Footer with app credits
 st.sidebar.markdown("---")
-st.sidebar.write("**Created by:** Your Name")
+st.sidebar.write("**Created by:** Apurva Pandey")
 st.sidebar.write("**Powered by:** EasyOCR, Streamlit, OpenCV")
