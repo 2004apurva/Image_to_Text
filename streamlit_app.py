@@ -3,7 +3,6 @@ from PIL import Image
 import easyocr
 import numpy as np
 import cv2
-import io
 
 # Load CSS for custom styling
 with open('wave.css') as f:
@@ -20,12 +19,18 @@ st.title("Detailed Image Upload and OCR Extraction App")
 # File uploader
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
 
-# Preprocessing options (removed Thresholding and Confidence Threshold)
+# Preprocessing options
 preprocess = st.sidebar.radio("Preprocessing Options:", ("None", "Grayscale", "Blurring"))
 
 # OCR Language selection
 languages = ['en', 'fr', 'de', 'es']  # Add more languages if needed
 ocr_language = st.sidebar.selectbox("Select OCR Language", languages, index=0)
+
+# Confidence threshold slider (optional, but not used in this case)
+confidence_threshold = st.sidebar.slider("Confidence Threshold", 0.0, 1.0, 0.5)
+
+# Option to enable GPU
+use_gpu = st.sidebar.checkbox("Use GPU (if available)", value=False)
 
 if uploaded_file is not None:
     # Open the uploaded image using PIL
@@ -50,25 +55,19 @@ if uploaded_file is not None:
     st.image(image, caption="Uploaded and Preprocessed Image", use_column_width=True)
 
     # Initialize EasyOCR Reader
-    reader = easyocr.Reader([ocr_language], gpu=False)
+    reader = easyocr.Reader([ocr_language], gpu=use_gpu)
 
     # Perform OCR on the image
     st.write("Extracting text using OCR...")
     result = reader.readtext(image_cv)
 
-    # Display the OCR result
+    # Display the OCR result without showing confidence, line by line
     st.write("Extracted Text:")
     for (bbox, text, prob) in result:
-        st.text(f"{text} (Confidence: {prob:.2f})")
+        st.write(text)
 
- 
-    
     # Convert the image back to RGB for displaying in Streamlit
     image_rgb = cv2.cvtColor(image_cv, cv2.COLOR_BGR2RGB)
-    
-
-
-    
 
 else:
     st.warning("Please upload an image file.")
